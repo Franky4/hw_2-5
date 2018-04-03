@@ -2,6 +2,7 @@ import subprocess
 # import sys
 import os
 from sys import platform
+import time
 
 
 def check_os():
@@ -45,6 +46,8 @@ def resize_file(source_file, resize_width):
 
 
 def main():
+    start_time = time.time()
+
     source_dir = 'Source'
     source_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), source_dir)
     result_dir = 'Result'
@@ -52,6 +55,8 @@ def main():
 
     check_result_folder(result_dir)
     copy_all_files(source_dir, result_dir)
+
+    print('Время выполнения %s секунд' % (time.time() - start_time))
 
 
 if __name__ == '__main__':
