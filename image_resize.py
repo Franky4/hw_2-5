@@ -41,8 +41,8 @@ def resize_file(source_file, resize_width):
     elif my_os == "win32":
         process = subprocess.run('convert {} -resize {} {}'.format(source_file, resize_width, source_file), shell=True,
                                  stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-
-    print(source_file)
+    print(time.time())
+    # print(source_file)
     # print('ARGV', process.args)
     # print('STDOUT', str(process.stdout))
     # print('STDERR', process.stderr)
@@ -51,6 +51,7 @@ def resize_file(source_file, resize_width):
 
 def main():
     start_time = time.time()
+    mp = []
     resize_width = 210
     source_dir = 'Source'
     source_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), source_dir)
@@ -60,23 +61,20 @@ def main():
     check_result_folder(result_dir)
     my_list_files = copy_all_files(source_dir, result_dir)
 
-    p1 = multiprocessing.Process(target=resize_file, args=(my_list_files[0], resize_width))
-    p2 = multiprocessing.Process(target=resize_file, args=(my_list_files[1], resize_width))
-    p3 = multiprocessing.Process(target=resize_file, args=(my_list_files[2], resize_width))
-    p4 = multiprocessing.Process(target=resize_file, args=(my_list_files[3], resize_width))
-    p5 = multiprocessing.Process(target=resize_file, args=(my_list_files[4], resize_width))
+    for f in my_list_files:
+        mp.append(multiprocessing.Process(target=resize_file, args=(f, resize_width)))
 
-    p1.start()
-    p2.start()
-    p3.start()
-    p4.start()
-    p5.start()
+    # p1 = multiprocessing.Process(target=resize_file, args=(my_list_files[0], resize_width))
 
-    p1.join()
-    p2.join()
-    p3.join()
-    p4.join()
-    p5.join()
+    for item in mp:
+        item.start()
+
+    # p1.start()
+
+    for item in mp:
+        item.join()
+
+    # p1.join()
 
     print('Tasks done! Time: %s seconds' % (time.time()-start_time))
 
