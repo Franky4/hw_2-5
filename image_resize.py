@@ -41,8 +41,8 @@ def resize_file(source_file, resize_width):
     elif my_os == "win32":
         process = subprocess.run('convert {} -resize {} {}'.format(source_file, resize_width, source_file), shell=True,
                                  stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    print(time.time())
-    # print(source_file)
+
+    # print(time.time())
     # print('ARGV', process.args)
     # print('STDOUT', str(process.stdout))
     # print('STDERR', process.stderr)
